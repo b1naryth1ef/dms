@@ -1,0 +1,3 @@
+[submodule "rust-server"]
+	path = rust-server
+	url = https://github.com/DCS-gRPC/rust-server.git

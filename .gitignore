@@ -1,0 +1,4 @@
+/*.bin
+/scratch.txt
+protoc-gen-dms-ts
+/sdk/gen/

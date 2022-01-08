@@ -1,0 +1,6 @@
+#!/bin/bash
+rm -rf sdk/gen/
+mkdir -p sdk/gen/
+protoc --plugin=./protoc-gen-dms-ts --dms-ts_out=sdk/gen/ $(find $1 -iname "*.proto") -I $1
+deno fmt sdk/gen/
+protoc --descriptor_set_out=descriptors.bin $(find $1 -iname "*.proto") -I $1
