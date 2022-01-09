@@ -155,17 +155,21 @@ func generateSimpleMessageType(file *File, message *descriptorpb.DescriptorProto
 			continue
 		}
 
+		typeName := ""
+		if field.TypeName == nil {
+			typeName = protoTypeToTypeScript(*field.Type)
+		} else {
+			typeName = generateTypeReference(file, *field.TypeName)
+		}
+
 		name := field.GetJsonName()
 		if field.GetProto3Optional() {
 			name = name + "?"
+		} else if field.GetLabel() == descriptorpb.FieldDescriptorProto_LABEL_REPEATED {
+			typeName = fmt.Sprintf("Array<%s>", typeName)
 		}
 
-		if field.TypeName == nil {
-			file.WriteLine("%s: %s;", name, protoTypeToTypeScript(*field.Type))
-		} else {
-			typeName := generateTypeReference(file, *field.TypeName)
-			file.WriteLine("%s: %s;", name, typeName)
-		}
+		file.WriteLine("%s: %s;", name, typeName)
 	}
 	file.indent -= 1
 
